@@ -1,57 +1,163 @@
-## MBTI Personality Type Prediction from Text
+MBTI Personality Type Prediction from Text
 
-A machine learning project that predicts Myers-Briggs Type Indicator (MBTI) personality types (16 types) from users' written text (mainly social media posts).
-The system classifies each of the four dichotomies separately:
+A machine learning project that predicts Myers–Briggs Type Indicator (MBTI) personality types from users’ written text (primarily social media posts).
 
-I/E (Introversion vs Extraversion)
-N/S (Intuition vs Sensing)
-F/T (Feeling vs Thinking)
-J/P (Judging vs Perceiving)
+The system predicts each MBTI dichotomy independently and combines them to produce a final 4-letter MBTI type (e.g., INFP, ESTJ).
 
-Final MBTI type is built by combining the four independent predictions (e.g. INFP, ESTJ).
-Main Features
+🔍 Problem Overview
 
-Text preprocessing: cleaning (URLs, mentions, special characters), stopword removal, lemmatization
-Feature extraction: TF-IDF vectorization
-Multiple classical ML models per dichotomy:
+The MBTI framework consists of four binary personality dimensions:
+
+I / E — Introversion vs Extraversion
+
+N / S — Intuition vs Sensing
+
+F / T — Feeling vs Thinking
+
+J / P — Judging vs Perceiving
+
+Instead of treating MBTI as a single 16-class problem, this project models it as four independent binary classification tasks, which improves flexibility, interpretability, and model performance.
+
+🧪 Project Pipeline
+1️⃣ Text Preprocessing
+
+URL and mention removal
+
+Special character and digit cleaning
+
+Lowercasing
+
+Stopword removal
+
+Lemmatization
+
+2️⃣ Feature Extraction
+
+TF-IDF vectorization
+
+Word-level n-grams
+
+3️⃣ Modeling (Per Dichotomy)
+
+Each MBTI dimension is trained separately using:
+
 Logistic Regression
-Linear SVM
+
+Linear Support Vector Machine (SVM)
+
 Multinomial Naive Bayes
+
 Decision Tree
+
 Random Forest (200 trees)
 
-Separate binary classification for each MBTI dimension
-Simple prediction function that returns full 4-letter MBTI type
-Model comparison (accuracy, confusion matrix, ROC-AUC visualized for selected dimensions)
-Interactive prediction demo using ipywidgets (Jupyter)
-Basic Streamlit app skeleton for deployment
+4️⃣ Final MBTI Prediction
 
-Main Dataset Limitations
+Predictions from the four binary classifiers are combined into a single MBTI type:
 
-Heavily imbalanced classes (especially strong imbalance in I/E and N/S dimensions — introverts and intuitives are significantly over-represented)
-Data mostly comes from personalitycafe forum posts → very specific writing style, topics, and community language
-Short / noisy / low-quality posts in many cases
-No demographic diversity control (age, gender, culture, native language)
-Limited size compared to modern LLMs datasets (usually ~8k–20k labeled examples depending on source)
-Labels are self-reported → noise from mistyping or misunderstanding MBTI
+(I/E) + (N/S) + (F/T) + (J/P) → Final MBTI
 
-Recommended Improvements (2025–2026 perspective)
-Must-do / high-impact:
+📊 Evaluation & Visualization
 
-Handle class imbalance properly (SMOTE, class_weight, focal loss, undersampling majority + oversampling minority)
-Try modern transformer models instead of TF-IDF + classical ML
-DistilBERT / RoBERTa / DeBERTa-v3 / ELECTRA / TinyBERT
-Fine-tune per dichotomy or multi-label head for all four at once
+Accuracy comparison across models
 
-Use sentence transformers (all-MiniLM-L6-v2, etc.) + simple classifier on top → often better than TF-IDF
-Add data augmentation (back-translation, synonym replacement, random deletion)
-Collect / mix more diverse data sources (Reddit, Twitter/X, Tumblr personality communities)
-Evaluate with proper stratified k-fold cross-validation
-Add confidence scores / probability calibration for predictions
-Create model ensemble (voting or stacking the best 2–3 models per dichotomy)
+Confusion matrices
 
-Nice-to-have:
+ROC–AUC curves (for selected dimensions)
+
+Stratified train/test splits
+
+🧩 Interactive Components
+
+Prediction function returning the full MBTI type from raw text
+
+Jupyter Notebook demo using ipywidgets
+
+Streamlit app skeleton for deployment
+
+⚠️ Dataset Limitations
+
+Severe class imbalance, especially in I/E and N/S
+
+Data sourced mainly from PersonalityCafe forums
+
+Writing style and topics are community-specific
+
+Short, noisy, and low-quality posts
+
+No demographic diversity control
+
+Limited dataset size (~8k–20k samples)
+
+Labels are self-reported, introducing noise and mistyping
+
+🚀 Recommended Improvements (2025–2026)
+✅ Must-Do / High-Impact
+
+Proper imbalance handling:
+
+class_weight
+
+SMOTE / undersampling
+
+Focal loss
+
+Replace TF-IDF with transformer-based models:
+
+DistilBERT
+
+RoBERTa
+
+DeBERTa-v3
+
+ELECTRA
+
+Sentence embeddings:
+
+all-MiniLM-L6-v2
+
+Fine-tuning:
+
+Per-dichotomy models or
+
+Single multi-label transformer head
+
+Data augmentation:
+
+Back-translation
+
+Synonym replacement
+
+Random deletion
+
+Diverse data sources:
+
+Reddit
+
+Twitter/X
+
+Tumblr
+
+Stratified k-fold cross-validation
+
+Probability calibration + confidence scores
+
+Model ensembling (voting / stacking)
+
+✨ Nice-to-Have
+
 Multilingual support (mBERT, XLM-R)
-Explainability (SHAP / LIME on important words per prediction)
-Web demo with Gradio or Streamlit + caching
-Compare against zero-shot / few-shot prompting with modern LLMs (Llama-3, Mistral, Gemma-2, Qwen-2)
+
+Explainability (SHAP / LIME)
+
+Gradio or Streamlit web demo
+
+Comparison with modern LLM zero-shot / few-shot prompting:
+
+LLaMA-3
+
+Mistral
+
+Gemma-2
+
+Qwen-2

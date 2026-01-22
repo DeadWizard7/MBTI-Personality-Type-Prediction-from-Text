@@ -1,4 +1,4 @@
-MBTI Personality Type Prediction from Text
+## MBTI Personality Type Prediction from Text
 
 A machine learning project that predicts Myers–Briggs Type Indicator (MBTI) personality types from users’ written text (primarily social media posts).
 
